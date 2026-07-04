@@ -11,14 +11,13 @@ export interface ColumnProps {
 }
 
 export default function Column({ columnId, title, cards, boardId }: ColumnProps): JSX.Element {
-  const openAddCardModal = useBoardStore((state) => state.openAddCardModal);
   const moveCard = useBoardStore((state) => state.moveCard);
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const cardId = e.dataTransfer.getData('text/plain');
     if (cardId) {
-      moveCard(cardId, columnId);
+      moveCard(boardId, cardId, columnId, 0);
     }
   };
 
@@ -33,7 +32,6 @@ export default function Column({ columnId, title, cards, boardId }: ColumnProps)
       onDragOver={handleDragOver}
     >
       <h3 className="column-title">{title}</h3>
-      <button onClick={openAddCardModal}>Add Card</button>
       <div className="column-cards">
         {cards.map((card) => (
           <Card key={card.id} card={card} boardId={boardId} />

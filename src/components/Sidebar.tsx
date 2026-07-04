@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useBoardStore } from '../store/boardStore';
+import useBoardStore from '../store/boardStore';
 import ThemeToggle from './ThemeToggle';
 
 export default function Sidebar(): JSX.Element {

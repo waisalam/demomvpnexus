@@ -1,7 +1,7 @@
-import { useBoardStore } from '@/stores/boardStore'
+import useBoardStore from '../store/boardStore'
 
 export default function Dashboard() {
-  const boards = useBoardStore((s) => s.boards)
+  const boards = useBoardStore((state) => state.boards)
 
   let totalCards = 0
   const statusCounts = { 'To Do': 0, 'In Progress': 0, 'Done': 0 }
@@ -10,8 +10,8 @@ export default function Dashboard() {
   for (const board of boards) {
     for (const card of board.cards) {
       totalCards++
-      if (card.status in statusCounts) statusCounts[card.status]++
-      if (card.priority in priorityCounts) priorityCounts[card.priority]++
+      if (card.status in statusCounts) statusCounts[card.status as keyof typeof statusCounts]++
+      if (card.priority in priorityCounts) priorityCounts[card.priority as keyof typeof priorityCounts]++
     }
   }
 
