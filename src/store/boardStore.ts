@@ -1,5 +1,9 @@
+=======
   return React.createElement(BoardContext.Provider, { value: contextValue }, children);
 // src/store/boardStore.ts
+import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
+=======
+import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 =======
 =======
   return React.createElement(BoardContext.Provider, { value: contextValue }, children);
