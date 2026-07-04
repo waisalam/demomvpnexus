@@ -1,73 +1,13 @@
-// src/types/board.ts
-export type Priority = 'low' | 'medium' | 'high';
-export type TagColor = 'red' | 'blue' | 'green' | 'yellow' | 'purple' | 'orange';
-export type ColumnType = 'todo' | 'in-progress' | 'done';
+>>>>>>> REPLACE
 
-export interface ChecklistItem {
-  id: string;
-  text: string;
-  completed: boolean;
-}
-
-export interface Card {
-  id: string;
-  title: string;
-  description: string;
-  priority: Priority;
-  tagColor: TagColor;
-  createdAt: string;
-  boardId: string;
-  columnId: ColumnType;
-  checklist: ChecklistItem[];
-}
-
-export interface Board {
-  id: string;
-  name: string;
-}
-
-// src/store/themeStore.ts
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-
-type Theme = 'light' | 'dark';
-
-interface ThemeContextValue {
-  theme: Theme;
-  toggleTheme: () => void;
-}
-
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
-const STORAGE_KEY = 'kanban-theme';
-
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === 'dark' || stored === 'light') return stored;
-    return 'light';
-  });
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, theme);
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
-  }, []);
-
+<<<<<<< SEARCH
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <BoardContext.Provider value={contextValue}>
       {children}
-    </ThemeContext.Provider>
+    </BoardContext.Provider>
   );
-};
-
-export const useTheme = (): ThemeContextValue => {
-  const context = useContext(ThemeContext);
-  if (!context) throw new Error('useTheme must be used within ThemeProvider');
-  return context;
-};
-
+=======
+  return React.createElement(BoardContext.Provider, { value: contextValue }, children);
 // src/store/boardStore.ts
 import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 import { Board, Card, ColumnType, Priority, ChecklistItem } from '../types/board';
