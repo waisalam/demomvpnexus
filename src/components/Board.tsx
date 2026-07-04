@@ -12,9 +12,9 @@ export default function Board(): JSX.Element {
     deleteCard,
   } = useBoardStore();
 
-  const board: Board | undefined = boards.find((b) => b.id === currentBoardId);
+  const board: Board | undefined = boards.find((b: Board) => b.id === currentBoardId);
   const columns: Column[] = board?.columns ?? [];
-  const allCards: Card[] = board?.cards ?? [];
+  const allCards: Card[] = board?.columns?.flatMap(col => col.cards) ?? [];
 
   // Search & filter state
   const [searchTerm, setSearchTerm] = useState('');
@@ -45,7 +45,7 @@ export default function Board(): JSX.Element {
   const getColumnCards = (columnId: string): Card[] => {
     const column = columns.find((c) => c.id === columnId);
     if (!column) return [];
-    return filteredCards.filter((card) => column.cardIds.includes(card.id));
+    return filteredCards.filter((card) => column.cards.some((c) => c.id === card.id));
   };
 
   // ---- Handlers ----
@@ -273,7 +273,7 @@ export default function Board(): JSX.Element {
     <div style={containerStyle}>
       {/* Header */}
       <div style={headerStyle}>
-        <h1 style={{ margin: 0 }}>{board.name}</h1>
+        <h1 style={{ margin: 0 }}>{board.title}</h1>
         <button style={btnStyle} onClick={() => setIsCreateOpen(true)}>
           + New Card
         </button>

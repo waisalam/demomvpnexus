@@ -72,7 +72,7 @@ export default function BoardFormModal({
   onClose,
   onSubmit,
   initialName = '',
-}: BoardFormModalProps): JSX.Element {
+}: BoardFormModalProps): JSX.Element | null {
   const [name, setName] = useState(initialName);
   const modalRef = useRef<HTMLDivElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
@@ -112,14 +112,14 @@ export default function BoardFormModal({
         if (!focusable.length) return;
 
         if (e.shiftKey) {
-          if (document.activeElement === firstFocusable) {
+          if (document.activeElement === firstFocusable!) {
             e.preventDefault();
             lastFocusable.focus();
           }
         } else {
           if (document.activeElement === lastFocusable) {
             e.preventDefault();
-            firstFocusable.focus();
+            firstFocusable!.focus();
           }
         }
       }

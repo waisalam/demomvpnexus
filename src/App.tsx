@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import Board from './pages/Board';
-import CardDetail from './pages/CardDetail';
-import Dashboard from './pages/Dashboard';
-import StoreProvider from './store/StoreProvider';
+import Board from './components/Board';
+import CardDetail from './components/CardDetail';
+import Dashboard from './components/Dashboard';
+import StoreProvider from './components/StoreProvider';
 import { getItem } from './utils/helpers';
 
 const App: React.FC = () => {
