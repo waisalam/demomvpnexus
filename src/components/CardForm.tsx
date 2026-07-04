@@ -19,7 +19,7 @@ export default function CardForm({
   columnId,
   existingCard,
 }: CardFormProps): JSX.Element {
-  const { addCard, updateCard } = useBoardStore();
+  const { addCard, updateCard } = useBoardStore() as any;
 
   const [title, setTitle] = useState(existingCard?.title ?? '');
   const [description, setDescription] = useState(existingCard?.description ?? '');

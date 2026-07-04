@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import useBoardStore from '../store/boardStore';
 import { Card, ChecklistItem } from '../types';
@@ -22,50 +22,54 @@ const priorityBadgeColor: Record<string, string> = {
 
 export default function CardDetail(): JSX.Element {
   const { boardId, cardId } = useParams<{ boardId: string; cardId: string }>();
-  const { getCard, updateCard } = useBoardStore();
+  const boards = useBoardStore((state) => state.boards);
 
-  const [card, setCard] = useState<Card | null>(null);
-  const [loading, setLoading] = useState(true);
+  const board = useMemo(
+    () => boards.find((b) => b.id === boardId),
+    [boards, boardId]
+  );
+
+  const card = useMemo(
+    () => (board && cardId ? board.cardById[cardId] : undefined),
+    [board, cardId]
+  );
+
   const [description, setDescription] = useState('');
   const [saving, setSaving] = useState(false);
 
-  // Load card data
   useEffect(() => {
-    let cancelled = false;
-    async function loadCard() {
-      if (!boardId || !cardId) {
-        setLoading(false);
-        return;
-      }
-      try {
-        const data = await getCard(boardId, cardId);
-        if (!cancelled) {
-          setCard(data ?? null);
-          if (data) {
-            setDescription(data.description);
-          }
-        }
-      } catch {
-        if (!cancelled) {
-          setCard(null);
-        }
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
+    if (card) {
+      setDescription(card.description);
     }
-    loadCard();
-    return () => { cancelled = true; };
-  }, [boardId, cardId, getCard]);
+  }, [card]);
+
+  const updateCardInStore = useCallback(
+    (cardIdToUpdate: string, updates: Partial<Card>) => {
+      useBoardStore.setState((state) => ({
+        boards: state.boards.map((b) => {
+          if (b.id !== boardId) return b;
+          return {
+            ...b,
+            cardById: {
+              ...b.cardById,
+              [cardIdToUpdate]: { ...b.cardById[cardIdToUpdate], ...updates },
+            },
+          };
+        }),
+      }));
+    },
+    [boardId]
+  );
 
   const handleSaveDescription = useCallback(async () => {
     if (!card || !boardId || saving) return;
     setSaving(true);
     try {
-      await updateCard(boardId, card.id, { description });
+      updateCardInStore(card.id, { description });
     } finally {
       setSaving(false);
     }
-  }, [boardId, card, description, saving, updateCard]);
+  }, [boardId, card, description, saving, updateCardInStore]);
 
   const handleToggleChecklist = useCallback(
     (itemId: string) => {
@@ -73,20 +77,18 @@ export default function CardDetail(): JSX.Element {
       const updatedChecklist = card.checklist.map((item) =>
         item.id === itemId ? { ...item, completed: !item.completed } : item
       );
-      updateCard(boardId, card.id, { checklist: updatedChecklist });
-      setCard((prev) => prev ? { ...prev, checklist: updatedChecklist } : null);
+      updateCardInStore(card.id, { checklist: updatedChecklist });
     },
-    [boardId, card, updateCard]
+    [boardId, card, updateCardInStore]
   );
 
   const handleDeleteChecklist = useCallback(
     (itemId: string) => {
       if (!card || !boardId) return;
       const updatedChecklist = card.checklist.filter((item) => item.id !== itemId);
-      updateCard(boardId, card.id, { checklist: updatedChecklist });
-      setCard((prev) => prev ? { ...prev, checklist: updatedChecklist } : null);
+      updateCardInStore(card.id, { checklist: updatedChecklist });
     },
-    [boardId, card, updateCard]
+    [boardId, card, updateCardInStore]
   );
 
   const handleAddChecklist = useCallback(
@@ -98,20 +100,10 @@ export default function CardDetail(): JSX.Element {
         completed: false,
       };
       const updatedChecklist = [...card.checklist, newItem];
-      updateCard(boardId, card.id, { checklist: updatedChecklist });
-      setCard((prev) => prev ? { ...prev, checklist: updatedChecklist } : null);
+      updateCardInStore(card.id, { checklist: updatedChecklist });
     },
-    [boardId, card, updateCard]
+    [boardId, card, updateCardInStore]
   );
-
-  // Loading state
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <p className="text-gray-500 text-lg">Loading card…</p>
-      </div>
-    );
-  }
 
   // Not found
   if (!card) {

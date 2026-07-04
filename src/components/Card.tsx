@@ -9,7 +9,6 @@ export interface CardProps {
 }
 
 export default function Card({ card, boardId, onClick }: CardProps): JSX.Element {
-  const editCard = useBoardStore((state) => state.editCard);
   const deleteCard = useBoardStore((state) => state.deleteCard);
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
@@ -18,7 +17,7 @@ export default function Card({ card, boardId, onClick }: CardProps): JSX.Element
 
   const handleEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    editCard(boardId, card.id);
+    onClick?.(card.id);
   };
 
   const handleDeleteClick = (e: React.MouseEvent) => {
