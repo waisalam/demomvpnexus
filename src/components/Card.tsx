@@ -47,8 +47,8 @@ export default function CardComponent({
       : card.description
     : null;
 
-  const formattedDate = card.createdAt
-    ? new Date(card.createdAt).toLocaleDateString()
+  const formattedDate = card.createdDate
+    ? new Date(card.createdDate).toLocaleDateString()
     : '';
 
   return (

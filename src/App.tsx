@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
 import Layout from './components/Layout';
 import Board from './components/Board';
 import CardDetail from './components/CardDetail';
 import Dashboard from './components/Dashboard';
-import StoreProvider from './components/StoreProvider';
+import StoreProvider from './store/StoreProvider';
+import { useBoardStore } from './store/useBoardStore';
 import { getItem } from './utils/helpers';
 
 const App: React.FC = () => {
@@ -15,14 +16,36 @@ const App: React.FC = () => {
     }
   }, []);
 
+  const CardDetailRoute = () => {
+    const { id } = useParams<{ id: string }>();
+    const { cards, updateCard, addSubtask, toggleSubtask, removeSubtask, deleteCard } = useBoardStore();
+    const card = cards.find(c => c.id === id);
+    if (!card) return <div>Card not found</div>;
+    return (
+      <CardDetail
+        card={card}
+        onUpdateCard={updateCard}
+        onAddSubtask={addSubtask}
+        onToggleSubtask={toggleSubtask}
+        onRemoveSubtask={removeSubtask}
+        onDeleteCard={deleteCard}
+      />
+    );
+  };
+
+  const DashboardRoute = () => {
+    const { boards, cards } = useBoardStore();
+    return <Dashboard boards={boards} cards={cards} />;
+  };
+
   return (
     <StoreProvider>
       <BrowserRouter>
         <Layout>
           <Routes>
             <Route path="/" element={<Board />} />
-            <Route path="/card/:id" element={<CardDetail />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/card/:id" element={<CardDetailRoute />} />
+            <Route path="/dashboard" element={<DashboardRoute />} />
             <Route path="*" element={<div>404 Not Found</div>} />
           </Routes>
         </Layout>
