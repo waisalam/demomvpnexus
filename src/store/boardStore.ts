@@ -1,11 +1,6 @@
->>>>>>> REPLACE
-
-<<<<<<< SEARCH
-  return (
-    <BoardContext.Provider value={contextValue}>
-      {children}
-    </BoardContext.Provider>
-  );
+  return React.createElement(BoardContext.Provider, { value: contextValue }, children);
+// src/store/boardStore.ts
+=======
 =======
   return React.createElement(BoardContext.Provider, { value: contextValue }, children);
 // src/store/boardStore.ts
