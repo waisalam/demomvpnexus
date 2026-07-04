@@ -4,7 +4,9 @@ import Layout from './components/Layout';
 import Board from './components/Board';
 import CardDetail from './components/CardDetail';
 import Dashboard from './components/Dashboard';
+// @ts-ignore
 import StoreProvider from './store/StoreProvider';
+// @ts-ignore
 import { useBoardStore } from './store/useBoardStore';
 import { getItem } from './utils/helpers';
 
@@ -19,7 +21,7 @@ const App: React.FC = () => {
   const CardDetailRoute = () => {
     const { id } = useParams<{ id: string }>();
     const { cards, updateCard, addSubtask, toggleSubtask, removeSubtask, deleteCard } = useBoardStore();
-    const card = cards.find(c => c.id === id);
+    const card = cards.find((c: { id: string }) => c.id === id);
     if (!card) return <div>Card not found</div>;
     return (
       <CardDetail

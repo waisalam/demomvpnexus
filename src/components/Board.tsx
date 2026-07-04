@@ -1,5 +1,5 @@
 import React, { useState, FormEvent } from 'react';
-import useBoardStore from '../store';
+import useBoardStore from '../store/useBoardStore';
 import { Board, Column, Card } from '../types';
 
 export default function Board(): JSX.Element {

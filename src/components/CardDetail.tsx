@@ -32,8 +32,8 @@ export default function CardDetail({
 
   const subtasks = card.subtasks ?? [];
 
-  const formattedDate = card.createdAt
-    ? new Date(card.createdAt).toLocaleDateString()
+  const formattedDate = card.createdDate
+    ? new Date(card.createdDate).toLocaleDateString()
     : '';
 
   const handleUpdate = () => {
