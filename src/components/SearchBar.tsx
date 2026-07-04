@@ -1,11 +1,10 @@
 import useBoardStore from '../store/boardStore'
-import type { KanbanStore } from '../store/boardStore'
 
 export default function SearchBar() {
-  const searchQuery = useBoardStore((s: KanbanStore) => s.searchQuery)
-  const filterPriority = useBoardStore((s: KanbanStore) => s.filterPriority)
-  const setSearchQuery = useBoardStore((s: KanbanStore) => s.setSearchQuery)
-  const setFilterPriority = useBoardStore((s: KanbanStore) => s.setFilterPriority)
+  const searchQuery = useBoardStore((s) => s.searchQuery)
+  const filterPriority = useBoardStore((s) => s.filterPriority)
+  const setSearchQuery = useBoardStore((s) => s.setSearchQuery)
+  const setFilterPriority = useBoardStore((s) => s.setFilterPriority)
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

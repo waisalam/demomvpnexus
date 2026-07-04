@@ -36,14 +36,14 @@ export default function Checklist({
             <input
               type="checkbox"
               id={`check-${item.id}`}
-              checked={item.checked}
+              checked={item.completed}
               onChange={() => onToggle(item.id)}
               className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
             />
             <label
               htmlFor={`check-${item.id}`}
               className={`flex-1 text-sm ${
-                item.checked ? 'line-through text-gray-400' : 'text-gray-700'
+                item.completed ? 'line-through text-gray-400' : 'text-gray-700'
               }`}
             >
               {item.text}

@@ -8,10 +8,12 @@ export default function Dashboard() {
   const priorityCounts = { High: 0, Medium: 0, Low: 0 }
 
   for (const board of boards) {
-    for (const card of board.cards) {
-      totalCards++
-      if (card.status in statusCounts) statusCounts[card.status as keyof typeof statusCounts]++
-      if (card.priority in priorityCounts) priorityCounts[card.priority as keyof typeof priorityCounts]++
+    for (const column of board.columns) {
+      for (const card of column.cards) {
+        totalCards++
+        if (card.status in statusCounts) statusCounts[card.status as keyof typeof statusCounts]++
+        if (card.priority in priorityCounts) priorityCounts[card.priority as keyof typeof priorityCounts]++
+      }
     }
   }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useBoardStore } from '../store/boardStore';
+import useBoardStore from '../store/boardStore';
 import { Card, ChecklistItem } from '../types';
 import Checklist from './Checklist';
 import Button from './Button';
@@ -71,7 +71,7 @@ export default function CardDetail(): JSX.Element {
     (itemId: string) => {
       if (!card || !boardId) return;
       const updatedChecklist = card.checklist.map((item) =>
-        item.id === itemId ? { ...item, checked: !item.checked } : item
+        item.id === itemId ? { ...item, completed: !item.completed } : item
       );
       updateCard(boardId, card.id, { checklist: updatedChecklist });
       setCard((prev) => prev ? { ...prev, checklist: updatedChecklist } : null);
@@ -95,7 +95,7 @@ export default function CardDetail(): JSX.Element {
       const newItem: ChecklistItem = {
         id: Date.now().toString(),
         text: text.trim(),
-        checked: false,
+        completed: false,
       };
       const updatedChecklist = [...card.checklist, newItem];
       updateCard(boardId, card.id, { checklist: updatedChecklist });
@@ -153,12 +153,12 @@ export default function CardDetail(): JSX.Element {
         {card.tag && (
           <span
             className="inline-block w-4 h-4 rounded-full"
-            style={{ backgroundColor: card.tag }}
-            title="Card tag"
+            style={{ backgroundColor: card.tag.color }}
+            title={card.tag.name}
           />
         )}
         <span className="text-sm text-gray-500">
-          Created {formatDate(card.createdDate)}
+          Created {formatDate(card.createdAt)}
         </span>
       </div>
 

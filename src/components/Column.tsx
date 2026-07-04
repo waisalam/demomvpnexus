@@ -17,7 +17,7 @@ export default function Column({ columnId, title, cards, boardId }: ColumnProps)
     e.preventDefault();
     const cardId = e.dataTransfer.getData('text/plain');
     if (cardId) {
-      moveCard(boardId, cardId, columnId, 0);
+      moveCard(boardId, cardId, columnId);
     }
   };
 

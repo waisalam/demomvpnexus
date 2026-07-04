@@ -8,7 +8,7 @@ export interface CardProps {
   onClick?: (cardId: string) => void;
 }
 
-export default function Card({ card, onClick }: CardProps): JSX.Element {
+export default function Card({ card, boardId, onClick }: CardProps): JSX.Element {
   const editCard = useBoardStore((state) => state.editCard);
   const deleteCard = useBoardStore((state) => state.deleteCard);
 
@@ -18,12 +18,12 @@ export default function Card({ card, onClick }: CardProps): JSX.Element {
 
   const handleEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    editCard(card.id);
+    editCard(boardId, card.id);
   };
 
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    deleteCard(card.id);
+    deleteCard(boardId, card.id);
   };
 
   const handleCardClick = () => {
@@ -46,7 +46,7 @@ export default function Card({ card, onClick }: CardProps): JSX.Element {
             {card.priority}
           </span>
         )}
-        {card.tag && <span className="card-tag">{card.tag}</span>}
+        {card.tag && <span className="card-tag">{card.tag.name}</span>}
         <span className="card-date">{formattedDate}</span>
       </div>
       <div className="card-actions">
