@@ -1,13 +1,11 @@
-import React from 'react';
-import { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTodos } from '../store/useTodos';
 import TodoItem from './TodoItem';
-import type { Todo } from '../types/todo';
-
-type Filter = 'all' | 'active' | 'done';
+import type { Todo, Filter } from '../types/todo';
 
 export default function TodoList(): JSX.Element {
-  const { todos, filter, setFilter, toggleTodo, deleteTodo, editTodo } = useTodos();
+  const { todos, toggleTodo, deleteTodo, updateTodo } = useTodos();
+  const [filter, setFilter] = useState<Filter>('all');
 
   const activeCount = useMemo(() => todos.filter((t: Todo) => !t.done).length, [todos]);
 
@@ -55,7 +53,7 @@ export default function TodoList(): JSX.Element {
               todo={todo}
               onToggle={toggleTodo}
               onDelete={deleteTodo}
-              onEdit={editTodo}
+              onEdit={updateTodo}
             />
           ))}
         </ul>

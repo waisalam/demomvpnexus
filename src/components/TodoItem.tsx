@@ -8,7 +8,7 @@ export interface TodoItemProps {
   onEdit: (id: string, title: string) => void;
 }
 
-export default function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps): JSX.Element {
+export default function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps): React.ReactElement {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(todo.title);
   const inputRef = useRef<HTMLInputElement>(null);

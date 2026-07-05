@@ -9,7 +9,7 @@ type Filter = 'all' | 'active' | 'done';
 
 export default function App() {
   const [filter, setFilter] = useState<Filter>('all');
-  const { todos, addTodo, toggleTodo, deleteTodo, editTodo } = useTodos();
+  const { todos, addTodo, toggleTodo, deleteTodo, updateTodo } = useTodos();
 
   const activeCount = todos.filter((t: Todo) => !t.done).length;
 
@@ -31,7 +31,7 @@ export default function App() {
         <h1>Todo App</h1>
         <ThemeToggle />
       </header>
-      <AddTodoForm onAdd={addTodo} />
+      <AddTodoForm />
       <div style={{ display: 'flex', gap: '1rem', marginBlock: '1rem' }}>
         <button onClick={() => setFilter('all')} disabled={filter === 'all'}>
           All
@@ -43,12 +43,7 @@ export default function App() {
           Done
         </button>
       </div>
-      <TodoList
-        todos={filteredTodos}
-        onToggle={toggleTodo}
-        onDelete={deleteTodo}
-        onEdit={(id: number, title: string) => editTodo(id, title)}
-      />
+      <TodoList />
     </div>
   );
 }

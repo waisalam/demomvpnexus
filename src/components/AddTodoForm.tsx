@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useTodos } from '../store/useTodos';
-import type { Priority } from '../types/todo';
+import type { Todo } from '../types/todo';
 
 export default function AddTodoForm() {
   const [title, setTitle] = useState('');
-  const [priority, setPriority] = useState<Priority>('low');
+  const [priority, setPriority] = useState<Todo['priority']>('low');
   const { addTodo } = useTodos();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -32,7 +32,7 @@ export default function AddTodoForm() {
         id="todo-priority"
         value={priority}
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-          setPriority(e.target.value as Priority)
+          setPriority(e.target.value as Todo['priority'])
         }
       >
         <option value="low">Low</option>
