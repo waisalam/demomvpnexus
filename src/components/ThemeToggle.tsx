@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function ThemeToggle(): JSX.Element {
+export default function ThemeToggle() {
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
       const stored = localStorage.getItem('theme');

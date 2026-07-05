@@ -1,7 +1,8 @@
+import React from 'react';
 import { useMemo } from 'react';
-import useTodos from '../store/useTodos';
+import { useTodos } from '../store/useTodos';
 import TodoItem from './TodoItem';
-import type { Todo } from '../types';
+import type { Todo } from '../types/todo';
 
 type Filter = 'all' | 'active' | 'done';
 

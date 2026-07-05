@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import useTodos from '../store/useTodos';
-import type { Priority } from '../types';
+import { useTodos } from '../store/useTodos';
+import type { Priority } from '../types/todo';
 
-export default function AddTodoForm(): JSX.Element {
+export default function AddTodoForm() {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState<Priority>('low');
   const { addTodo } = useTodos();

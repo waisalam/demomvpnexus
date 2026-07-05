@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { AddTodoForm, TodoList, ThemeToggle } from './components';
-import { useTodos } from './store';
-import type { Todo } from './store';
+import AddTodoForm from './components/AddTodoForm';
+import TodoList from './components/TodoList';
+import ThemeToggle from './components/ThemeToggle';
+import { useTodos } from './store/useTodos';
+import type { Todo } from './types/todo';
 
 type Filter = 'all' | 'active' | 'done';
 
