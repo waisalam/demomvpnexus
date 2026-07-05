@@ -3,7 +3,7 @@ import { useTodos } from '../store/useTodos';
 import TodoItem from './TodoItem';
 import type { Todo, Filter } from '../types/todo';
 
-export default function TodoList(): JSX.Element {
+export default function TodoList(): React.ReactElement {
   const { todos, toggleTodo, deleteTodo, updateTodo } = useTodos();
   const [filter, setFilter] = useState<Filter>('all');
 
