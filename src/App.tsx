@@ -1,0 +1,52 @@
+import React, { useState } from 'react';
+import { AddTodoForm, TodoList, ThemeToggle } from './components';
+import { useTodos } from './store';
+import type { Todo } from './store';
+
+type Filter = 'all' | 'active' | 'done';
+
+export default function App() {
+  const [filter, setFilter] = useState<Filter>('all');
+  const { todos, addTodo, toggleTodo, deleteTodo, editTodo } = useTodos();
+
+  const activeCount = todos.filter((t: Todo) => !t.done).length;
+
+  let filteredTodos: Todo[];
+  switch (filter) {
+    case 'active':
+      filteredTodos = todos.filter((t: Todo) => !t.done);
+      break;
+    case 'done':
+      filteredTodos = todos.filter((t: Todo) => t.done);
+      break;
+    default:
+      filteredTodos = todos;
+  }
+
+  return (
+    <div>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1>Todo App</h1>
+        <ThemeToggle />
+      </header>
+      <AddTodoForm onAdd={addTodo} />
+      <div style={{ display: 'flex', gap: '1rem', marginBlock: '1rem' }}>
+        <button onClick={() => setFilter('all')} disabled={filter === 'all'}>
+          All
+        </button>
+        <button onClick={() => setFilter('active')} disabled={filter === 'active'}>
+          Active ({activeCount})
+        </button>
+        <button onClick={() => setFilter('done')} disabled={filter === 'done'}>
+          Done
+        </button>
+      </div>
+      <TodoList
+        todos={filteredTodos}
+        onToggle={toggleTodo}
+        onDelete={deleteTodo}
+        onEdit={(id: number, title: string) => editTodo(id, title)}
+      />
+    </div>
+  );
+}
