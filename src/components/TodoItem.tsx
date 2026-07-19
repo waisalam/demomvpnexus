@@ -8,6 +8,21 @@ export interface TodoItemProps {
   onEdit: (id: string, title: string) => void;
 }
 
+function formatRelativeTime(dateString: string): string {
+  const now = Date.now();
+  const then = new Date(dateString).getTime();
+  const diffMs = now - then;
+  const diffMinutes = Math.floor(diffMs / 60000);
+  if (diffMinutes < 1) return 'just now';
+  if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes === 1 ? '' : 's'} ago`;
+  const diffHours = Math.floor(diffMinutes / 60);
+  if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? '' : 's'} ago`;
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 30) return `${diffDays} day${diffDays === 1 ? '' : 's'} ago`;
+  const diffMonths = Math.floor(diffDays / 30);
+  return `${diffMonths} month${diffMonths === 1 ? '' : 's'} ago`;
+}
+
 export default function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps): React.ReactElement {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(todo.title);
@@ -68,20 +83,24 @@ export default function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemP
 
   const priorityColor: Record<string, string> = {
     low: 'green',
-    medium: '#b8860b', // dark goldenrod for visible contrast
+    medium: 'orange',
     high: 'red',
   };
 
-  const formattedDate = todo.createdAt
-    ? new Date(todo.createdAt).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      })
-    : '';
+  const formattedDate = todo.createdAt ? formatRelativeTime(todo.createdAt) : '';
 
   return (
-    <li className="todo-item" aria-label={`Todo: ${todo.title}`}>
+    <li
+      className="todo-item"
+      aria-label={`Todo: ${todo.title}`}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        padding: '8px 12px',
+        listStyle: 'none',
+      }}
+    >
       <input
         type="checkbox"
         checked={todo.done}
@@ -97,6 +116,7 @@ export default function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemP
           onBlur={handleEditBlur}
           onKeyDown={handleEditKeyDown}
           aria-label="Edit todo title"
+          style={{ flex: 1 }}
         />
       ) : (
         <span
@@ -106,19 +126,48 @@ export default function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemP
           onDoubleClick={handleDoubleClick}
           onKeyDown={handleTitleKeyDown}
           aria-label={`Edit "${todo.title}"`}
+          style={{ flex: 1, cursor: 'pointer' }}
         >
           {todo.title}
         </span>
       )}
       <span
         className="todo-priority-badge"
-        style={{ color: priorityColor[todo.priority] || 'black' }}
+        style={{
+          color: priorityColor[todo.priority] || 'black',
+          fontWeight: 600,
+          fontSize: '0.85rem',
+          padding: '2px 6px',
+          borderRadius: '4px',
+          textTransform: 'capitalize',
+        }}
         aria-label={`Priority: ${todo.priority}`}
       >
         {todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1)}
       </span>
-      <span className="todo-date">{formattedDate}</span>
-      <button onClick={handleDelete} aria-label={`Delete "${todo.title}"`}>
+      <span
+        className="todo-date"
+        style={{
+          fontSize: '0.8rem',
+          color: '#6b7280',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {formattedDate}
+      </span>
+      <button
+        onClick={handleDelete}
+        aria-label={`Delete "${todo.title}"`}
+        style={{
+          background: 'transparent',
+          border: '1px solid #e5e7eb',
+          borderRadius: '4px',
+          padding: '4px 8px',
+          cursor: 'pointer',
+          fontSize: '0.8rem',
+          color: '#374151',
+        }}
+      >
         Delete
       </button>
     </li>
