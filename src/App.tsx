@@ -4,9 +4,7 @@ import AddTodoForm from './components/AddTodoForm';
 import TodoList from './components/TodoList';
 import ThemeToggle from './components/ThemeToggle';
 import { useTodos } from './store/useTodos';
-import type { Todo } from './types/todo';
-
-type Filter = 'all' | 'active' | 'done';
+import type { Todo, Filter } from './types/todo';
 
 export default function App() {
   const [filter, setFilter] = useState<Filter>('all');
@@ -61,7 +59,7 @@ export default function App() {
             Done
           </button>
         </div>
-        <TodoList todos={filteredTodos} />
+        <TodoList />
       </div>
     </>
   );
