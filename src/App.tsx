@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AddTodoForm from './components/AddTodoForm';
 import TodoList from './components/TodoList';
 import ThemeToggle from './components/ThemeToggle';
@@ -9,7 +9,7 @@ type Filter = 'all' | 'active' | 'done';
 
 export default function App() {
   const [filter, setFilter] = useState<Filter>('all');
-  const { todos, addTodo, toggleTodo, deleteTodo, updateTodo } = useTodos();
+  const { todos } = useTodos();
 
   const activeCount = todos.filter((t: Todo) => !t.done).length;
 
@@ -26,20 +26,32 @@ export default function App() {
   }
 
   return (
-    <div>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Todo App</h1>
+    <div className="container">
+      <header className="app-header">
+        <h1 className="app-title">Todo App</h1>
         <ThemeToggle />
       </header>
       <AddTodoForm />
-      <div style={{ display: 'flex', gap: '1rem', marginBlock: '1rem' }}>
-        <button onClick={() => setFilter('all')} disabled={filter === 'all'}>
+      <div className="filter-buttons">
+        <button
+          className={`btn ${filter === 'all' ? 'btn-active' : ''}`}
+          onClick={() => setFilter('all')}
+          disabled={filter === 'all'}
+        >
           All
         </button>
-        <button onClick={() => setFilter('active')} disabled={filter === 'active'}>
+        <button
+          className={`btn ${filter === 'active' ? 'btn-active' : ''}`}
+          onClick={() => setFilter('active')}
+          disabled={filter === 'active'}
+        >
           Active ({activeCount})
         </button>
-        <button onClick={() => setFilter('done')} disabled={filter === 'done'}>
+        <button
+          className={`btn ${filter === 'done' ? 'btn-active' : ''}`}
+          onClick={() => setFilter('done')}
+          disabled={filter === 'done'}
+        >
           Done
         </button>
       </div>

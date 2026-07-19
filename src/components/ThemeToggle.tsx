@@ -11,7 +11,8 @@ export default function ThemeToggle() {
   });
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.body.classList.toggle('dark', theme === 'dark');
+    document.body.classList.toggle('light', theme !== 'dark');
     localStorage.setItem('theme', theme);
   }, [theme]);
 
@@ -21,6 +22,7 @@ export default function ThemeToggle() {
 
   return (
     <button
+      className="theme-toggle"
       onClick={toggleTheme}
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
     >
