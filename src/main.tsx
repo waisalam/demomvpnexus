@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useState } from 'react';
-import Board from './components/Board';
+import Home from './components/Home';
 
 function About() {
   return (
@@ -88,7 +88,7 @@ export default function App() {
         </button>
       </nav>
 
-      {page === 'home' ? <Board /> : <About />}
+      {page === 'home' ? <Home /> : <About />}
     </div>
   );
 }
