@@ -15,7 +15,11 @@ type Action =
   | { type: 'DELETE_TODO'; payload: { id: string } }
   | { type: 'UPDATE_TODO'; payload: { id: string; title: string } };
 
-function todosReducer(state: Todo[], action: Action): Todo[] {
+type State = {
+  todos: Todo[];
+};
+
+function todosReducer(state: State, action: Action): State {
   switch (action.type) {
     case 'ADD_TODO': {
       const newTodo: Todo = {
@@ -25,20 +29,32 @@ function todosReducer(state: Todo[], action: Action): Todo[] {
         done: false,
         createdAt: new Date().toISOString(),
       };
-      return [...state, newTodo];
+      return {
+        ...state,
+        todos: [...state.todos, newTodo],
+      };
     }
     case 'TOGGLE_TODO': {
-      return state.map((todo: Todo) =>
-        todo.id === action.payload.id ? { ...todo, done: !todo.done } : todo,
-      );
+      return {
+        ...state,
+        todos: state.todos.map((todo: Todo) =>
+          todo.id === action.payload.id ? { ...todo, done: !todo.done } : todo,
+        ),
+      };
     }
     case 'DELETE_TODO': {
-      return state.filter((todo: Todo) => todo.id !== action.payload.id);
+      return {
+        ...state,
+        todos: state.todos.filter((todo: Todo) => todo.id !== action.payload.id),
+      };
     }
     case 'UPDATE_TODO': {
-      return state.map((todo: Todo) =>
-        todo.id === action.payload.id ? { ...todo, title: action.payload.title } : todo,
-      );
+      return {
+        ...state,
+        todos: state.todos.map((todo: Todo) =>
+          todo.id === action.payload.id ? { ...todo, title: action.payload.title } : todo,
+        ),
+      };
     }
     default:
       return state;
@@ -93,24 +109,26 @@ function normalizeTodo(obj: any): Todo {
   };
 }
 
-function loadInitialState(): Todo[] {
+function loadInitialState(): State {
   try {
     const stored = localStorage.getItem('todos');
     if (stored) {
       const parsed: unknown = JSON.parse(stored);
       if (Array.isArray(parsed)) {
-        // Keep only items that pass validation, normalizing their shape
-        return parsed.filter(isTodo).map(normalizeTodo);
+        const todos = parsed.filter(isTodo).map(normalizeTodo);
+        return { todos };
       }
     }
   } catch {
     // localStorage not available or data corrupted – fallback to seed
   }
-  return getSeedTodos();
+  return { todos: getSeedTodos() };
 }
 
 export function useTodos(): UseTodosReturn {
-  const [todos, dispatch] = useReducer(todosReducer, undefined, () => loadInitialState());
+  const [state, dispatch] = useReducer(todosReducer, undefined, () => loadInitialState());
+
+  const todos = state.todos;
 
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos));
