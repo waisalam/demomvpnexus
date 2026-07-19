@@ -99,7 +99,12 @@ button {
   --transition-base: 200ms ease;
 
   /* Layout */
-  --content-max-width: 40rem; /* 640px */
+  --content-max-width: 48rem; /* 768px */
+  --hero-max-width: 64rem; /* 1024px */
+
+  /* Typography */
+  --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 /* ---- Dark Theme Overrides ---- */
@@ -136,6 +141,51 @@ button {
   border-radius: var(--radius-md);
   padding: var(--space-4);
   box-shadow: var(--shadow-sm);
+}
+
+/* ---- Hero Section ---- */
+.hero {
+  background: linear-gradient(135deg, var(--color-accent) 0%, #7c3aed 100%);
+  color: #fff;
+  padding: var(--space-10) var(--space-4);
+  text-align: center;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-8);
+  box-shadow: var(--shadow-md);
+}
+
+.hero h1 {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-4);
+}
+
+.hero p {
+  font-size: var(--text-lg);
+  max-width: 36rem;
+  margin: 0 auto var(--space-6);
+  opacity: 0.9;
+}
+
+.feature-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-list li {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(4px);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 500;
 }
 
 /* ---- Global Form Element Base Styles ---- */
@@ -247,6 +297,15 @@ textarea:focus {
   flex-direction: column;
   gap: var(--space-6);
   min-height: 100vh;
+}
+
+/* ---- Todo Panel (card-like container for the todo app) ---- */
+.todo-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-6);
 }
 
 /* ---- Add Todo Form ---- */
