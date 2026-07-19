@@ -1,15 +1,18 @@
-import { useState } from 'react';
+/** @jsxImportSource react */
+import { useState, useEffect } from 'react';
 import AddTodoForm from './components/AddTodoForm';
 import TodoList from './components/TodoList';
 import ThemeToggle from './components/ThemeToggle';
 import { useTodos } from './store/useTodos';
-import type { Todo } from './types/todo';
-
-type Filter = 'all' | 'active' | 'done';
+import type { Todo, Filter } from './types/todo';
 
 export default function App() {
   const [filter, setFilter] = useState<Filter>('all');
   const { todos } = useTodos();
+
+  useEffect(() => {
+    setFilter('all');
+  }, [todos.length]);
 
   const activeCount = todos.filter((t: Todo) => !t.done).length;
 
@@ -26,36 +29,38 @@ export default function App() {
   }
 
   return (
-    <div className="container">
-      <header className="app-header">
-        <h1 className="app-title">Todo App</h1>
-        <ThemeToggle />
-      </header>
-      <AddTodoForm />
-      <div className="filter-buttons">
-        <button
-          className={`btn ${filter === 'all' ? 'btn-active' : ''}`}
-          onClick={() => setFilter('all')}
-          disabled={filter === 'all'}
-        >
-          All
-        </button>
-        <button
-          className={`btn ${filter === 'active' ? 'btn-active' : ''}`}
-          onClick={() => setFilter('active')}
-          disabled={filter === 'active'}
-        >
-          Active ({activeCount})
-        </button>
-        <button
-          className={`btn ${filter === 'done' ? 'btn-active' : ''}`}
-          onClick={() => setFilter('done')}
-          disabled={filter === 'done'}
-        >
-          Done
-        </button>
+    <>
+      <div className="container">
+        <header className="app-header">
+          <h1 className="app-title">Todo App</h1>
+          <ThemeToggle />
+        </header>
+        <AddTodoForm />
+        <div className="filter-buttons">
+          <button
+            className={`btn ${filter === 'all' ? 'btn-active' : ''}`}
+            onClick={() => setFilter('all')}
+            disabled={filter === 'all'}
+          >
+            All
+          </button>
+          <button
+            className={`btn ${filter === 'active' ? 'btn-active' : ''}`}
+            onClick={() => setFilter('active')}
+            disabled={filter === 'active'}
+          >
+            Active ({activeCount})
+          </button>
+          <button
+            className={`btn ${filter === 'done' ? 'btn-active' : ''}`}
+            onClick={() => setFilter('done')}
+            disabled={filter === 'done'}
+          >
+            Done
+          </button>
+        </div>
+        <TodoList />
       </div>
-      <TodoList />
-    </div>
+    </>
   );
 }

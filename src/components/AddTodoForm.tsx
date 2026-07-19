@@ -4,7 +4,7 @@ import type { Todo } from '../types/todo';
 
 export default function AddTodoForm() {
   const [title, setTitle] = React.useState('');
-  const [priority, setPriority] = React.useState<Todo['priority']>('low');
+  const [priority, setPriority] = React.useState<Todo['priority']>('medium');
   const [error, setError] = React.useState<string | null>(null);
   const { addTodo } = useTodos();
 
@@ -17,6 +17,7 @@ export default function AddTodoForm() {
     }
     addTodo(trimmed, priority);
     setTitle('');
+    setPriority('medium');
     setError(null);
   };
 
